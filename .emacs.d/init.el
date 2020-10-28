@@ -138,9 +138,9 @@
  )
 
 ;; Unicode support
-(use-package unicode-fonts
-  :config
-  (unicode-fonts-setup))
+;; (use-package unicode-fonts
+;;   :config
+;;   (unicode-fonts-setup))
 
 
 ;; Backups
