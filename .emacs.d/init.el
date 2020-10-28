@@ -143,6 +143,10 @@
 ;;   (unicode-fonts-setup))
 
 ;; Python: autodetect the indentation style
+(use-package python
+  :config
+  (setq python-shell-interpreter "/bin/python3"))
+
 (defun how-many-region (begin end regexp &optional interactive)
   "Print number of non-trivial matches for REGEXP in region.                    
    Non-interactive arguments are Begin End Regexp"
