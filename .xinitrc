@@ -62,13 +62,14 @@ picom &
 # Wallpaper
 nitrogen --restore &
 
-# Load time on the status bar
+# # Load time on the status bar
 # while true; do
 #    xsetroot -name "$(date)"
 #    sleep 1min # update every second 
 # done &
 
-slstatus &
+# slstatus &
+statusbar &
 
 # Notification server
 dunst &
@@ -81,5 +82,7 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx &
+
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 exec dwm
