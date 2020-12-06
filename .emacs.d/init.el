@@ -40,6 +40,19 @@
 (require 'use-package)
 (setq use-package-always-ensure t)     ; Download and install the packages before they are use-package'd 
 
+;; Try a package without installing
+(use-package try)
+
+;; Navigate between windows
+(use-package ace-window
+  :ensure t
+  :init
+  (progn
+    (global-set-key [remap other-window] 'ace-window)
+    (custom-set-faces
+     '(aw-leading-char-face
+       ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+    ))
 
 ;; Ivy for the smart completion system
 (use-package counsel			;; counsel is used by ivy-rich
@@ -136,9 +149,10 @@
  ;; If there is more than one, they won't work right.
  '(js-indent-level 2)
  '(package-selected-packages
-   '(dumb-jump counsel-projectile projectile add-node-modules-path flycheck web-mode xref-js2 js2-refactor js2-mode unicode-fonts helpful counsel ivy-rich which-key rainbow-delimiters doom-themes doom-modeline diminish swiper ivy use-package))
+   '(try org-bullets dumb-jump counsel-projectile projectile add-node-modules-path flycheck web-mode xref-js2 js2-refactor js2-mode unicode-fonts helpful counsel ivy-rich which-key rainbow-delimiters doom-themes doom-modeline diminish swiper ivy use-package))
  '(web-mode-code-indent-offset 2)
- '(web-mode-markup-indent-offset 2))
+ '(web-mode-markup-indent-offset 2)
+ '(winner-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -265,6 +279,12 @@
 :ensure t
 :config
 (counsel-projectile-mode))
+
+;; Org mode
+(use-package org-bullets
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  )
 
 ;; (use-package dumb-jump
 ;; ;; :bind (("M-g o" . dumb-jump-go-other-window)
