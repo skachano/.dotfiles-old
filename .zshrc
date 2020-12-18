@@ -100,6 +100,8 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR=emacs
 
+export PATH="$PATH:/home/siarzhuk/bin"
+
 screenfetch
 
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then

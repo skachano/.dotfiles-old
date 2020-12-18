@@ -20,17 +20,61 @@
 (column-number-mode)
 (global-display-line-numbers-mode t)
 
+;; Enable recursive minibuffers
+(set 'enable-recursive-minibuffers t)
+
+;; Terminal
+(use-package multi-term
+  :ensure t
+  :bind (([f1] . multi-term))
+  :config
+  ;; (setq multi-term-dedicated-select-after-open-p t
+  ;;       multi-term-dedicated-window-height 25
+  ;;       multi-term-program "/bin/bash")
+
+  ;; ;; Enable compilation-shell-minor-mode in multi term.
+  ;; ;; http://www.masteringemacs.org/articles/2012/05/29/compiling-running-scripts-emacs/
+
+  ;; ;; TODO: WTF? Turns off colors in terminal.
+  ;; ;; (add-hook 'term-mode-hook 'compilation-shell-minor-mode)
+  ;; (add-hook 'term-mode-hook
+  ;;           (lambda ()
+  ;;             (dolist
+  ;;                 (bind '(
+  ;;                         ;; ("<S-down>" . multi-term)
+  ;;                         ;; ("<S-left>" . multi-term-prev)
+  ;;                         ;; ("<S-right>" . multi-term-next)
+  ;;                         ;; ("C-<backspace>" . term-send-backward-kill-word)
+  ;;                         ;; ("C-<delete>" . term-send-forward-kill-word)
+  ;;                         ;; ("C-<left>" . term-send-backward-word)
+  ;;                         ;; ("C-<right>" . term-send-forward-word)
+  ;;                         ("C-c C-j" . term-line-mode)
+  ;;                         ("C-c C-k" . term-char-mode)
+  ;;                         ;; ("C-v" . scroll-up)
+  ;;                         ;; ("C-y" . term-paste)
+  ;;                         ;; ("C-z" . term-stop-subjob)
+  ;;                         ;; ("M-DEL" . term-send-backward-kill-word)
+  ;;                         ;; ("M-d" . term-send-forward-kill-word)))
+  ;;                         ))
+  ;;               (add-to-list 'term-bind-key-alist bind))))
+  (add-hook 'term-mode-hook (lambda ()
+                              (define-key term-mode-map (kbd "C-c C-j") 'term-line-mode)
+                              (define-key term-mode-map (kbd "C-c C-k") 'term-char-mode)
+                              ))
+  )
+
+
 (dolist (mode '(org-mode-hook
 		term-mode-hook
 		shell-mode-hook
 		eshell-mode-hook))
 	 (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-;; Package sources 
+;; Package sources
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")))
+			                   ("org" . "https://orgmode.org/elpa/")
+			                   ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)			; Initialise the package archives above
 (unless package-archive-contents
   (package-refresh-contents))	        ; Useful for the very first run
@@ -38,7 +82,7 @@
   (package-refresh-contents)
   (package-install 'use-package))	; Install use-package
 (require 'use-package)
-(setq use-package-always-ensure t)     ; Download and install the packages before they are use-package'd 
+(setq use-package-always-ensure t)     ; Download and install the packages before they are use-package'd
 
 ;; Try a package without installing
 (use-package try)
@@ -73,6 +117,7 @@
 	 ("RET" . ivy-alt-done))
   :config
   (ivy-mode 1)
+  (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
   (setq ivy-use-virtual-buffers t))
 
 (use-package ivy-rich
@@ -142,23 +187,23 @@
 (global-set-key (kbd "M-<down>") 'down-one-line) ; Alt-Up for one line up
 (global-set-key (kbd "M-<up>") 'up-one-line)	 ; Alt-Down for one line down
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(js-indent-level 2)
- '(package-selected-packages
-   '(try org-bullets dumb-jump counsel-projectile projectile add-node-modules-path flycheck web-mode xref-js2 js2-refactor js2-mode unicode-fonts helpful counsel ivy-rich which-key rainbow-delimiters doom-themes doom-modeline diminish swiper ivy use-package))
- '(web-mode-code-indent-offset 2)
- '(web-mode-markup-indent-offset 2)
- '(winner-mode t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; (custom-set-variables
+;;  ;; custom-set-variables was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(js-indent-level 2)
+;;  '(package-selected-packages
+;;    '(try org-bullets dumb-jump counsel-projectile projectile add-node-modules-path flycheck web-mode xref-js2 js2-refactor js2-mode unicode-fonts helpful counsel ivy-rich which-key rainbow-delimiters doom-themes doom-modeline diminish swiper ivy use-package))
+;;  '(web-mode-code-indent-offset 2)
+;;  '(web-mode-markup-indent-offset 2)
+;;  '(winner-mode t))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  )
 
 ;; Unicode support
 ;; (use-package unicode-fonts
@@ -273,7 +318,7 @@
 (projectile-mode)
 (setq projectile-completion-system 'ivy)
 :bind (:map projectile-mode-map
-            ("C-c p" . projectile-command-map)))
+            ("M-p" . projectile-command-map)))
 
 (use-package counsel-projectile
 :ensure t
@@ -303,9 +348,26 @@
   (setq dumb-jump-default-project "~/Corpy/Confide/confide-frontend"))
 
 ;; Company
-(use-package company)
+(use-package company
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
 ;; (require 'company-web-html)
+(use-package org)
+;; (org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
 
 ;; Backups
 (setq backup-directory-alist `(("." . "~/.emacs.d/saves")))
 (setq backup-by-copying t) ;; slowest but safest
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(multi-term xref-js2 which-key web-mode use-package unicode-fonts try rainbow-delimiters python-mode org-bullets magit js2-refactor ivy-rich helpful flycheck dumb-jump doom-themes doom-modeline diminish counsel-projectile company add-node-modules-path ace-window)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))
