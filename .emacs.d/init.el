@@ -26,7 +26,11 @@
 ;; Terminal
 (use-package multi-term
   :ensure t
-  :bind (([f1] . multi-term))
+  :bind (([f1] . multi-term)
+         :map term-raw-map
+         ("C-c C-j" . term-line-mode)
+         :map term-mode-map
+         ("C-c C-k" . term-char-mode))
   :config
   ;; (setq multi-term-dedicated-select-after-open-p t
   ;;       multi-term-dedicated-window-height 25
@@ -57,10 +61,10 @@
   ;;                         ;; ("M-d" . term-send-forward-kill-word)))
   ;;                         ))
   ;;               (add-to-list 'term-bind-key-alist bind))))
-  (add-hook 'term-mode-hook (lambda ()
-                              (define-key term-mode-map (kbd "C-c C-j") 'term-line-mode)
-                              (define-key term-mode-map (kbd "C-c C-k") 'term-char-mode)
-                              ))
+  ;; (add-hook 'term-mode-hook (lambda ()
+  ;;                             (define-key term-mode-map (kbd "C-c C-j") 'term-line-mode)
+  ;;                             (define-key term-mode-map (kbd "C-c C-k") 'term-char-mode)
+  ;;                             ))
   )
 
 
